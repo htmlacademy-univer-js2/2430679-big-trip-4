@@ -1,15 +1,15 @@
 import { CITY, DESCRIPTION } from '../const';
 
-const IMG_COUNT = 5;
+const IMAGE_COUNT = 5;
 
-const BOUND = 20;
+const NUMBER = 100;
 
 function getMockDestination(identity) {
   return {
     id: identity,
     city: CITY.get(identity),
     description: DESCRIPTION.get(identity),
-    img: Array.from({ length: IMG_COUNT },() => `https://loremflickr.com/248/152?random=${Math.floor(Math.random() * BOUND)}`)
+    img: Array.from({length: IMAGE_COUNT},() => `https://loremflickr.com/248/152?random=${Math.floor(Math.random() * NUMBER)}`)
   };
 }
 
