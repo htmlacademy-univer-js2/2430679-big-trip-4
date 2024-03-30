@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import {render, RenderPosition} from '../render.js';
 import EventListView from '../view/event-list-view.js';
 import FilterView from '../view/filter-view';
