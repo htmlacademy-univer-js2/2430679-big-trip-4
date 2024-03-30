@@ -10,7 +10,6 @@ export default class EventListView {
     if(!this.element) {
       this.element = createElement(this.getTemplate());
     }
-
     return this.element;
   }
 
