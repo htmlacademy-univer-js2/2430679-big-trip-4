@@ -12,9 +12,9 @@ const DEFAULT_POINT = {
 };
 
 export default class PointEditView extends AbstractView {
-  #point;
-  #onPointEditReset;
-  #onPointEditSubmit;
+  #point = null;
+  #onPointEditReset = null;
+  #onPointEditSubmit = null;
 
   constructor({point = DEFAULT_POINT, onPointEditReset, onPointEditSubmit}) {
     super();

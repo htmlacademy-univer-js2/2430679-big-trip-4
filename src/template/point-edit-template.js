@@ -36,8 +36,8 @@ function createPointEditPhotoTemplate(img) {
 }
 
 function createPointEditTemplate(point) {
-  const {type, price, date, destination, offer} = point;
-  const {city, description, img} = destination;
+  const {type, city, price, date, destination, offer} = point;
+  const {description, img} = destination;
 
   return `<li class="trip-events__item">
             <form class="event event--edit" action="#" method="post">
