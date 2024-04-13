@@ -13,8 +13,7 @@ function createPointOfferTemplate(offer) {
 }
 
 function createPointTemplate(point) {
-  const {type, price, date, destination, offer, isFavorite} = point;
-  const {city} = destination;
+  const {type, city, price, date, offer, isFavorite} = point;
   const hours = getTimeInHours(date.startTime, date.endTime);
   const minutes = getTimeInMinutes(date.startTime, date.endTime);
   const eventFavoriteClass = isFavorite ? 'event__favorite-btn--active' : '';
