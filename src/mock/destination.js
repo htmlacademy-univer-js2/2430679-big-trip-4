@@ -4,11 +4,11 @@ const IMAGE_COUNT = 5;
 
 const ID_NUMBER = 100;
 
-const getMockDestination = (identity) => {
+function getMockDestination(identity) {
   return {
     id: identity,
     description: DESCRIPTION.get(identity),
-    img: Array.from({length: IMAGE_COUNT},() => `https://loremflickr.com/248/152?random=${Math.floor(Math.random() * ID_NUMBER)}`)
+    img: Array.from({ length: IMAGE_COUNT },() => `https://loremflickr.com/248/152?random=${Math.floor(Math.random() * ID_NUMBER)}`)
   };
 }
 

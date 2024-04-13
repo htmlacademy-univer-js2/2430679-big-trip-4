@@ -1,20 +1,20 @@
 import dayjs from 'dayjs';
 
-const getRandomArrayElement = (array) => {
+function getRandomArrayElement(array) {
   return array[Math.floor(Math.random() * array.length)];
-};
+}
 
-const getTimeInHours = (startTime, endTime) => {
+function getTimeInHours(startTime, endTime) {
   const hours = dayjs(endTime).diff(dayjs(startTime), 'hours');
   return hours !== 0 ? `${hours}H` : '';
-};
+}
 
-const getTimeInMinutes = (startTime, endTime) => {
+function getTimeInMinutes(startTime, endTime) {
   const minutes = dayjs(endTime).diff(dayjs(startTime), 'minutes') % 60;
   return minutes !== 0 ? `${minutes}M` : '';
-};
+}
 
-const getTripTitle = (cities) => {
+function getTripTitle(cities) {
   return cities.reduce((acc, city, index) => {
     if (index !== cities.length - 1) {
       acc += `${city} &mdash; `;
@@ -23,13 +23,13 @@ const getTripTitle = (cities) => {
     }
     return acc;
   }, '');
-};
+}
 
-const getTripStart = (sortedPoints) => {
+function getTripStart(sortedPoints) {
   return dayjs(sortedPoints[0].date.startTime).format('MMM DD');
-};
+}
 
-const getTripEnd = (sortedPoints) => {
+function getTripEnd(sortedPoints) {
   const startDate = sortedPoints[0].date.startTime;
   const endDate = sortedPoints[sortedPoints.length - 1].date.endTime;
   if (dayjs(startDate).format('MMM') === dayjs(endDate).format('MMM')) {
@@ -37,6 +37,6 @@ const getTripEnd = (sortedPoints) => {
   } else {
     return dayjs(endDate).format('MMM DD');
   }
-};
+}
 
 export {getRandomArrayElement, getTimeInHours, getTimeInMinutes, getTripTitle, getTripStart, getTripEnd};
