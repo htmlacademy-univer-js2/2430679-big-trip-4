@@ -53,17 +53,17 @@ export default class BoardPresenter {
       }
     };
 
-    const onEditClick = () => {
+    function onEditClick() {
       replace(pointEditComponent, pointComponent);
       document.addEventListener('keydown', escKeydown);
     }
 
-    const onPointEditSubmit = () => {
+    function onPointEditSubmit() {
       replace(pointComponent, pointEditComponent);
       document.removeEventListener('keydown', escKeydown);
     }
 
-    const onPointEditReset = () => {
+    function onPointEditReset() {
       replace(pointComponent, pointEditComponent);
       document.removeEventListener('keydown', escKeydown);
     }

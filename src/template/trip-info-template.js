@@ -6,7 +6,7 @@ function createTripInfoTemplate(points) {
   const cities = sortedPoints.map((point) => point.city);
   const tripTitle = getTripTitle(cities);
 
-  return`<section class="trip-main__trip-info  trip-info">
+  return `<section class="trip-main__trip-info  trip-info">
   <div class="trip-info__main">
     <h1 class="trip-info__title">${tripTitle}</h1>
 
@@ -16,7 +16,7 @@ function createTripInfoTemplate(points) {
   <p class="trip-info__cost">
     Total: &euro;&nbsp;<span class="trip-info__cost-value">${total}</span>
   </p>
-</section>`
-};
+</section>`;
+}
 
 export {createTripInfoTemplate};
