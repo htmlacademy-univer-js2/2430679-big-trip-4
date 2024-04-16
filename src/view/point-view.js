@@ -2,8 +2,8 @@ import AbstractView from '../framework/view/abstract-view';
 import {createPointTemplate} from '../template/point-template.js';
 
 export default class PointView extends AbstractView {
-  #point;
-  #onEditClick;
+  #point = null;
+  #onEditClick = null;
 
   constructor({point, onEditClick}) {
     super();
