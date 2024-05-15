@@ -1,22 +1,38 @@
-import {TYPE_POINT, PRICE, CITY, DATE_AND_TIME, OFFER} from '../const';
-import {getRandomArrayElement} from '../utils';
-import {getMockDestination} from './destination';
+import { getRandomArrayElement, getRandomPositiveInteger } from '../utils/common';
+import { createRandomDates } from './dates';
+import { POINT_TYPES, DESCRIPTIONS, DESTINATIONS_NAMES, tripPrice, offerPrice, OFFER_TITLES } from './constants';
+import { nanoid } from 'nanoid';
 
-const OFFER_COUNT = 5;
+const createPicture = () => ({
+  src: `http://picsum.photos/248/152?r=${getRandomPositiveInteger(0, 10)}`,
+  description: getRandomArrayElement(DESCRIPTIONS),
+});
 
-const getRandomPoint = () => {
-  const identity = Math.floor(Math.random() * CITY.size);
-  const offerCount = Math.floor(Math.random() * OFFER_COUNT + 1);
+const createDestination = (id) => ({
+  id,
+  description: getRandomArrayElement(DESCRIPTIONS),
+  name: getRandomArrayElement(DESTINATIONS_NAMES),
+  pictures: Array.from({ length: 4 }, createPicture)
+});
+
+const createOffer = (id) => ({
+  id,
+  title: getRandomArrayElement(OFFER_TITLES),
+  price: getRandomPositiveInteger(offerPrice.MIN, offerPrice.MAX)
+});
+
+const createPoint = () => {
+  const randomDates = createRandomDates();
   return {
-    id: identity,
-    city: CITY.get(identity),
-    type: getRandomArrayElement(TYPE_POINT),
-    price: getRandomArrayElement(PRICE),
-    date: getRandomArrayElement(DATE_AND_TIME),
-    destination: getMockDestination(identity),
-    offer: Array.from({length: offerCount}, () => getRandomArrayElement(OFFER)),
-    isFavorite: Math.floor(Math.random() * 2)
+    basePrice: getRandomPositiveInteger(tripPrice.MIN, tripPrice.MAX),
+    dateFrom: randomDates.dateFrom,
+    dateTo: randomDates.dateTo,
+    destination: createDestination(),
+    id: nanoid(),
+    isFavorite: Boolean(getRandomPositiveInteger(0, 1)),
+    offers: createOffer(),
+    type: getRandomArrayElement(POINT_TYPES)
   };
 };
 
-export {getRandomPoint};
+export { createPoint };
