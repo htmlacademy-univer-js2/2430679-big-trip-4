@@ -1,4 +1,15 @@
-const POINT_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+const POINT_TYPES = {
+  TAXI: 'taxi',
+  BUS: 'bus',
+  TRAIN: 'train',
+  SHIP: 'ship',
+  DRIVE: 'drive',
+  FLIGHT: 'flight',
+  CHECK_IN: 'check-in',
+  SIGHTSEEING: 'sightseeing',
+  RESTAURANT: 'restaurant'
+};
+
 const OFFER_TITLES = ['Upgrade to a business class', 'Order Uber', 'Add lunch', 'Order train'];
 
 const DESCRIPTIONS = [
@@ -51,6 +62,7 @@ const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT',
 };
 
 const UserAction = {
@@ -59,4 +71,14 @@ const UserAction = {
   DELETE_POINT: 'DELETE_POINT',
 };
 
-export { POINT_TYPES, OFFER_TITLES, DESCRIPTIONS, DESTINATIONS_NAMES, tripPrice, offerPrice, FilterType, SortType, picturesCount, maxPoints, UpdateType, UserAction };
+const Method = {
+  GET: 'GET',
+  PUT: 'PUT',
+};
+
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING'
+};
+
+export { POINT_TYPES, OFFER_TITLES, DESCRIPTIONS, DESTINATIONS_NAMES, tripPrice, offerPrice, FilterType, SortType, picturesCount, maxPoints, UpdateType, UserAction, Method, Mode };
