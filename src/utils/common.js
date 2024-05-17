@@ -10,24 +10,4 @@ const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0,
 
 const isEscKeyDown = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
-const updateItem = (items, update) => {
-  const index = items.findIndex((item) => item.id === update.id);
-
-  if (index === -1) {
-    return items;
-  }
-
-  return [
-    ...items.slice(0, index),
-    update,
-    ...items.slice(index + 1),
-  ];
-};
-
-const doCapitalizeString = (string) => {
-  const capFirstString = string[0].toUpperCase();
-  const restOfString = string.slice(1);
-  return capFirstString + restOfString;
-};
-
-export { getRandomPositiveInteger, updateItem, getRandomArrayElement, isEscKeyDown, doCapitalizeString };
+export { getRandomPositiveInteger, getRandomArrayElement, isEscKeyDown };
