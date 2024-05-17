@@ -1,4 +1,4 @@
-import { createPoint } from '../mock/task';
+import { createPoint } from '../mock/point';
 
 export default class pointsModel {
 

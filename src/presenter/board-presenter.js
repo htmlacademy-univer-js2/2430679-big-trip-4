@@ -4,12 +4,17 @@ import TripEventsView from '../view/trip-events-view.js';
 import NoPointView from '../view/no-point-view.js';
 import PointPresenter from './point-presenter.js';
 import { updateItem } from '../utils/common.js';
+import { SortType } from '../mock/constants.js';
+import { sortPointsDayUp, sortPointsPriceUp, sortPointsTimeUp } from '../utils/point.js';
 
 
 export default class TripPresenter {
   #tripContainer = null;
   #pointsModel = null;
   #tripPoints = [];
+
+  #sourcedBoardPoints = [];
+  #currentSortType = [];
 
   #pointsList = new TripEventsView();
   #sortComponent = new SortView();
@@ -25,6 +30,8 @@ export default class TripPresenter {
   init() {
     this.#tripPoints = [...this.#pointsModel.point];
 
+    this.#sourcedBoardPoints = [...this.#pointsModel.point];
+
     if (this.#tripPoints.length === 0) {
       this.#renderNoPoints();
     }
@@ -36,6 +43,7 @@ export default class TripPresenter {
 
   #renderSort = () => {
     render(this.#sortComponent, this.#tripContainer, RenderPosition.AFTERBEGIN);
+    this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
   };
 
   #renderNoPoints = () => {
@@ -66,11 +74,40 @@ export default class TripPresenter {
 
   #handlePointChange = (updatedPoint) => {
     this.#tripPoints = updateItem(this.#tripPoints, updatedPoint);
+    this.#sourcedBoardPoints = updateItem(this.#sourcedBoardPoints, updatedPoint);
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
   };
 
   #handleModeChange = () => {
     this.#pointPresenter.forEach((presenter) => presenter.resetView());
+  };
+
+  #sortPoints = (sortType) => {
+    switch (sortType) {
+      case SortType.DAY:
+        this.#tripPoints.sort(sortPointsDayUp);
+        break;
+      case SortType.TIME:
+        this.#tripPoints.sort(sortPointsTimeUp);
+        break;
+      case SortType.PRICE:
+        this.#tripPoints.sort(sortPointsPriceUp);
+        break;
+      default:
+        this.#tripPoints = [...this.#sourcedBoardPoints];
+    }
+
+    this.#currentSortType = sortType;
+  };
+
+  #handleSortTypeChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortPoints(sortType);
+    this.#clearEventsList();
+    this.#renderPointList();
   };
 
 }
