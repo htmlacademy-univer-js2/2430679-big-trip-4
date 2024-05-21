@@ -9,9 +9,12 @@ import { sorting } from '../utils/sorting.js';
 import { filter } from '../utils/filter.js';
 import LoadingView from '../view/loading-view.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
+import TripInfoPresenter from './trip-info-presenter.js';
+import ErrorServerView from '../view/error-server-view.js';
 
 
 export default class TripPresenter {
+  #tripInfoContainer = null;
   #tripContainer = null;
   #pointsModel = null;
   #filterModel = null;
@@ -25,13 +28,17 @@ export default class TripPresenter {
   #sortComponent = null;
   #noPointComponent = null;
   #loadingComponent = new LoadingView();
+  #errorServer = new ErrorServerView();
 
   #pointPresenter = new Map();
   #pointNewPresenter = null;
+  #tripInfoPresenter = null;
+
   #isLoading = true;
   #uiBlocker = new UiBlocker(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT);
 
-  constructor(tripContainer, pointsModel, filterModel, destinationsModel, offersModel) {
+  constructor(tripInfoContainer, tripContainer, pointsModel, filterModel, destinationsModel, offersModel) {
+    this.#tripInfoContainer = tripInfoContainer;
     this.#tripContainer = tripContainer;
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
@@ -67,6 +74,11 @@ export default class TripPresenter {
   #renderBoard = () => {
     if (this.#isLoading) {
       this.#renderLoading();
+      return;
+    }
+
+    if (this.#offersModel.offers.length === 0 || this.#destinationsModel.destinations.length === 0) {
+      this.#renderErrorServer();
       return;
     }
 
@@ -112,6 +124,20 @@ export default class TripPresenter {
 
   #renderLoading = () => {
     render(this.#loadingComponent, this.#tripContainer, RenderPosition.AFTERBEGIN);
+  };
+
+  #renderTripInfo = () => {
+    this.#tripInfoPresenter = new TripInfoPresenter(this.#tripInfoContainer, this.#destinationsModel, this.#offersModel);
+    const sortedPoints = sorting[SortType.DAY](this.points);
+    this.#tripInfoPresenter.init(sortedPoints);
+  };
+
+  #renderErrorServer = () => {
+    render(this.#errorServer, this.#tripContainer, RenderPosition.AFTERBEGIN);
+  };
+
+  #clearTripInfo = () => {
+    this.#tripInfoPresenter.destroy();
   };
 
   #clearAll = ({ resetSortType = false } = {}) => {
@@ -185,6 +211,8 @@ export default class TripPresenter {
         break;
       case UpdateType.MINOR:
         this.#clearAll();
+        this.#clearTripInfo();
+        this.#renderTripInfo();
         this.#renderBoard();
         break;
       case UpdateType.MAJOR:
@@ -196,6 +224,7 @@ export default class TripPresenter {
         remove(this.#loadingComponent);
         remove(this.#noPointComponent);
         this.#renderBoard();
+        this.#renderTripInfo();
         break;
     }
   };
