@@ -7,50 +7,16 @@ const POINT_TYPES = {
   FLIGHT: 'flight',
   CHECK_IN: 'check-in',
   SIGHTSEEING: 'sightseeing',
-  RESTAURANT: 'restaurant'
+  RESTAURANT: 'restaurant',
 };
 
-const OFFER_TITLES = ['Upgrade to a business class', 'Order Uber', 'Add lunch', 'Order train'];
-
-const DESCRIPTIONS = [
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  'Cras aliquet varius magna, non porta ligula feugiat eget.',
-  'Fusce tristique felis at fermentum pharetra.',
-  'Aliquam id orci ut lectus varius viverra.',
-  'Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.',
-  'Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.',
-  'Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.',
-  'Sed sed nisi sed augue convallis suscipit in sed felis.',
-  'Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus.',
-  'In rutrum ac purus sit amet tempus.'
-];
-
-const DESTINATIONS_NAMES = ['Ekaterinburg', 'Chelyabinsk', 'Berezovski', 'Moscow', 'Saint-Petersburg', 'Kazan', 'Toronto', 'Washington', 'Raleigh', 'Paris', 'Rim'];
-
-const AUTHORIZATION = 'Basic qN3Fsq43cwa4xj3z2';
-const END_POINT = 'https://18.ecmascript.pages.academy/big-trip';
-
-const offerPrice = {
-  MIN: 10,
-  MAX: 50
-};
-
-const picturesCount = {
-  MIN: 1,
-  MAX: 4
-};
-
-const tripPrice = {
-  MIN: 100,
-  MAX: 1500
-};
-
-const maxPoints = 8;
+const AUTHORIZATION = 'Basic gyuhiol';
+const END_POINT = 'https://21.objects.htmlacademy.pro/big-trip';
 
 const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
-  PAST: 'past'
+  PAST: 'past',
 };
 
 const SortType = {
@@ -78,12 +44,12 @@ const Method = {
   GET: 'GET',
   PUT: 'PUT',
   POST: 'POST',
-  DELETE: 'DELETE'
+  DELETE: 'DELETE',
 };
 
 const Mode = {
   DEFAULT: 'DEFAULT',
-  EDITING: 'EDITING'
+  EDITING: 'EDITING',
 };
 
 const TimeLimit = {
@@ -92,6 +58,14 @@ const TimeLimit = {
 };
 
 export {
-  POINT_TYPES, OFFER_TITLES, DESCRIPTIONS, DESTINATIONS_NAMES, tripPrice, offerPrice, FilterType, SortType, picturesCount,
-  maxPoints, UpdateType, UserAction, Method, Mode, AUTHORIZATION, END_POINT, TimeLimit
+  POINT_TYPES,
+  FilterType,
+  SortType,
+  UpdateType,
+  UserAction,
+  Method,
+  Mode,
+  AUTHORIZATION,
+  END_POINT,
+  TimeLimit,
 };
