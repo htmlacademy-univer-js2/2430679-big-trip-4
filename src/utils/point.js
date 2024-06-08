@@ -1,52 +1,45 @@
+import { TimePeriods } from '../const';
+
 import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
-const isPointPast = (pointDate) => dayjs(pointDate.dateFrom).isBefore(dayjs());
-const isPointFuture = (pointDate) => dayjs(pointDate.dateFrom).isAfter(dayjs());
-const getDateTime = (date) => dayjs(date).format('DD/MM/YY hh:mm');
-const getDate = (date) => dayjs(date).format('DD MMM');
+dayjs.extend(duration);
+dayjs.extend(relativeTime);
 
-const getDays = (days) => {
-  if (days < 10 && days !== 0) {
-    days = `0${days}D`;
+export const formatStringToDateTime = (date) => dayjs(date).format('DD/MM/YY HH:mm');
+export const formatStringToShortDate = (date) => dayjs(date).format('DD MMM');
+export const formatStringToTime = (date) => dayjs(date).format('HH:mm');
+
+export const getPointDuration = (dateFrom, dateTo) => {
+  const timeDiff = dayjs(dateTo).diff(dayjs(dateFrom));
+  const days = dayjs.duration(timeDiff).days()
+    + dayjs.duration(timeDiff).months() * 31
+    + dayjs.duration(timeDiff).years() * 365;
+  const hours = dayjs.duration(timeDiff).hours();
+  const minutes = dayjs.duration(timeDiff).minutes();
+
+  if (timeDiff >= TimePeriods.MSEC_IN_DAY) {
+    return dayjs.duration({ days, hours, minutes }).format('DD[D] HH[H] mm[M]');
+  } else if (timeDiff >= TimePeriods.MSEC_IN_HOUR) {
+    return dayjs.duration({ days, hours, minutes }).format('HH[H] mm[M]');
   }
-  else if (days === 0) {
-    days = '';
-  }
-  else {
-    days = `${days}D`;
-  }
-  return days;
+  return dayjs.duration({ days, hours, minutes }).format('mm[M]');
 };
 
-const getHours = (hours) => {
-  while (hours > 23) {
-    hours -= 24;
-  }
+export const isBigDifference = (pointA, pointB) =>
+  pointA.dateFrom !== pointB.dateFrom ||
+  pointA.basePrice !== pointB.basePrice ||
+  getPointDuration(pointA.dateFrom, pointA.dateTo) !== getPointDuration(pointB.dateFrom, pointB.dateTo);
 
-  if (hours < 10 && hours !== 0) {
-    hours = `0${hours}H`;
-  }
-  else if (hours === 0) {
-    hours = '';
-  }
-  else {
-    hours = `${hours}H`;
-  }
-  return hours;
+export const getPointsDateDifference = (pointA, pointB) => dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
+export const getPointsPriceDifference = (pointA, pointB) => pointB.basePrice - pointA.basePrice;
+export const getPointsDurationDifference = (pointA, pointB) => {
+  const durationA = dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));
+  const durationB = dayjs(pointB.dateTo).diff(dayjs(pointB.dateFrom));
+  return durationB - durationA;
 };
 
-const getMinutes = (minutes) => {
-  while (minutes > 59) {
-    minutes -= 60;
-  }
-
-  if (minutes < 10 && minutes !== 0) {
-    minutes = `0${minutes}M`;
-  }
-  else {
-    minutes = `${minutes}M`;
-  }
-  return minutes;
-};
-
-export { isPointFuture, isPointPast, getDateTime, getDate, getDays, getHours, getMinutes };
+export const isPointFuture = (point) => dayjs().isBefore(point.dateFrom);
+export const isPointPast = (point) => dayjs().isAfter(point.dateTo);
+export const isPointPresent = (point) => dayjs().isAfter(point.dateFrom) && dayjs().isBefore(point.dateTo);

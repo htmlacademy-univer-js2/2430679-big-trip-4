@@ -1,33 +1,55 @@
-import { render, remove } from '../framework/render.js';
-import TripInfoView from '../view/trip-info-view.js';
+import { RenderPosition, remove, render, replace } from '../framework/render';
+import { getTripCost, getTripDates, getTripRoute } from '../utils/trip-info';
+import { TripInfoView } from '../view';
 
 export default class TripInfoPresenter {
-  #points = null;
   #tripInfoComponent = null;
-  #tripInfoContainer = null;
+  #container = null;
+
+  #pointsModel = null;
   #destinationsModel = null;
   #offersModel = null;
 
-  #destinations = null;
-  #offers = null;
-
-  constructor(tripInfoContainer, destinationsModel, offersModel) {
-    this.#tripInfoContainer = tripInfoContainer;
+  constructor({ container, pointsModel, destinationsModel, offersModel }) {
+    this.#container = container;
+    this.#pointsModel = pointsModel;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
   }
 
-  init = (points) => {
-    this.#points = points;
-    this.#destinations = [...this.#destinationsModel.destinations];
-    this.#offers = [...this.#offersModel.offers];
+  init() {
+    this.#renderTripInfo();
+    this.#pointsModel.addObserver(this.#handleModelChange);
+  }
 
-    this.#tripInfoComponent = new TripInfoView(this.#points, this.#destinations, this.#offers);
+  #renderTripInfo = () => {
+    const prevTripInfoComponent = this.#tripInfoComponent;
 
-    render(this.#tripInfoComponent, this.#tripInfoContainer);
+    const points = this.#pointsModel.getAll();
+    const destinations = this.#destinationsModel.getAll();
+    const offers = this.#offersModel.getAll();
+
+    this.#tripInfoComponent = new TripInfoView({
+      route: getTripRoute(points, destinations),
+      dates: getTripDates(points),
+      cost: getTripCost(points, offers),
+      isEmpty: !points.length,
+    });
+
+    if (!prevTripInfoComponent) {
+      render(
+        this.#tripInfoComponent,
+        this.#container,
+        RenderPosition.AFTERBEGIN
+      );
+      return;
+    }
+
+    replace(this.#tripInfoComponent, prevTripInfoComponent);
+    remove(prevTripInfoComponent);
   };
 
-  destroy = () => {
-    remove(this.#tripInfoComponent);
+  #handleModelChange = () => {
+    this.#renderTripInfo();
   };
 }

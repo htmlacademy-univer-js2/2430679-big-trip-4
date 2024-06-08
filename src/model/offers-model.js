@@ -1,24 +1,24 @@
-import Observable from '../framework/observable.js';
+import Observable from '../framework/observable';
 
 export default class OffersModel extends Observable {
+  #service = null;
   #offers = [];
-  #offersApiService = null;
 
-  constructor(offersApiService) {
+  constructor({ service }) {
     super();
-    this.#offersApiService = offersApiService;
+    this.#service = service;
   }
 
-  init = async () => {
-    try {
-      this.#offers = await this.#offersApiService.offers;
-    } catch (err) {
-      this.#offers = [];
-    }
-  };
+  getAll() {
+    return this.#offers;
+  }
 
-  get offers() {
+  getByType(type) {
+    return this.#offers.find((offer) => offer.type === type);
+  }
+
+  async init() {
+    this.#offers = await this.#service.getOffers();
     return this.#offers;
   }
 }
-
